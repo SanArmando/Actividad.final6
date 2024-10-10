@@ -13,7 +13,7 @@ public class Cliente implements Comparable<Cliente> {
         this.nombre = nombre;
         this.edad = edad;
         this.documento = documento;
-        this.gestion = gestion;
+        //String.gestion = gestion;
     }
 
     public String getNombre() {
@@ -66,9 +66,9 @@ public class Cliente implements Comparable<Cliente> {
         if (edad >= 51) {
             return 5; // Atención preferencial por adulto mayor
         } else if (edad >= 26 && edad <= 50) {
-            return gestion.getPrioridad(); // Atención especializada
+            //return gestion.getPrioridad(); // Atención especializada
         } else if (edad >= 18 && edad <= 25) {
-            return gestion.getPrioridad(); // Consulta normal, depende de la gestión
+            //return gestion.getPrioridad(); // Consulta normal, depende de la gestión
         }
         return 0; // Sin prioridad
     }
