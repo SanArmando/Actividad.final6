@@ -7,13 +7,14 @@ public class Cliente implements Comparable<Cliente> {
     private String nombre;
     private int edad;
     private String documento;
-    private String gestion;
+    private String TipoGestion;
+    private final TipoGestion gestion;
 
     public Cliente(String nombre, int edad, String documento, TipoGestion gestion) {
         this.nombre = nombre;
         this.edad = edad;
         this.documento = documento;
-        //String.gestion = gestion;
+        this.gestion = gestion;
     }
 
     public String getNombre() {
@@ -40,11 +41,11 @@ public class Cliente implements Comparable<Cliente> {
         this.documento = documento;
     }
 
-    public String getGestion() {
+    public TipoGestion getGestion() {
         return gestion;
     }
 
-    public void setGestion(String gestion) {
+    public void serGestion(String gestion) {
         this.gestion = gestion;
     }
 
@@ -66,9 +67,9 @@ public class Cliente implements Comparable<Cliente> {
         if (edad >= 51) {
             return 5; // Atención preferencial por adulto mayor
         } else if (edad >= 26 && edad <= 50) {
-            //return gestion.getPrioridad(); // Atención especializada
+            return gestion.getPrioridad(); // Atención especializada
         } else if (edad >= 18 && edad <= 25) {
-            //return gestion.getPrioridad(); // Consulta normal, depende de la gestión
+            return gestion.getPrioridad(); // Consulta normal, depende de la gestión
         }
         return 0; // Sin prioridad
     }
