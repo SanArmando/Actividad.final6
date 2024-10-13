@@ -1,55 +1,59 @@
+package com.scotiabank.operacion;
 
-package com.scotiabank.Prioridad;
+import com.scotiabank.enums.TipoGestion;
+import com.scotiabank.scotiabank.Cliente;
 
+import javax.swing.*;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
-public class TurnoPorPrioridad {
-    
-    
-    // Atributos de la clase
-    private String tipoTurno;
-    private String cliente;
-    private String usuarioDiscapacidad;
-    private String tipoCliente;
-    
-    // Constructor de la clase
-    public TurnoPorPrioridad(String tipoTurno, String cliente, String usuarioDiscapacidad, String tipoCliente) {
-        this.tipoTurno = tipoTurno;
-        this.cliente = cliente;
-        this.usuarioDiscapacidad = usuarioDiscapacidad;
-        this.tipoCliente = tipoCliente;
-    }
-    
-    // Métodos getter y setter para los atributos
-    
-    // Métodos para manejar los turnos según la prioridad
-    public void atenderTurno() {
-        if (this.esTurnoDePrioridad()) {
-            System.out.println("Atendiendo turno de prioridad para el cliente: " + this.cliente);
-        } else if (this.esTurnoNormal()) {
-            System.out.println("Atendiendo turno normal para el cliente: " + this.cliente);
-        } else if (this.esNuevoCliente()) {
-            System.out.println("Atendiendo nuevo cliente: " + this.cliente);
-        } else if (this.esClienteConDiscapacidad()) {
-            System.out.println("Atendiendo cliente con discapacidad: " + this.cliente);
-        } else {
-            System.out.println("No se puede atender este tipo de turno.");
+public class TurnoPrioridad {
+
+    public static void main(String[] args) {
+        Queue<Cliente> colaClientes = new PriorityQueue<>();
+        boolean continuar = true;
+
+        while (continuar) {
+            String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
+            String documento = JOptionPane.showInputDialog("Ingrese el documento del cliente:");
+            int edad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la edad del cliente:"));
+            boolean esEmbarazada = JOptionPane.showConfirmDialog(null,
+                    "¿El cliente está embarazada?", "Confirmación",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+
+            String[] opciones = {"1. Caja / Apertura de producto", "2. Asesoría Comercial", "3. Reclamos, Quejas o Recursos"};
+            int seleccion = JOptionPane.showOptionDialog(null,
+                    "Seleccione el tipo de gestión", "Gestión",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                    null, opciones, opciones[0]);
+
+            TipoGestion tipoGestion = null;
+            switch (seleccion) {
+                case 0:
+                    tipoGestion = TipoGestion.CAJA;
+                    break;
+                case 1:
+                    tipoGestion = TipoGestion.ASESORIA_COMERCIAL;
+                    break;
+                case 2:
+                    tipoGestion = TipoGestion.PQR;
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Selección inválida");
+                    continue;
+            }
+
+            Cliente cliente = new Cliente(nombre, documento, edad, esEmbarazada, tipoGestion);
+            colaClientes.add(cliente);
+
+            JOptionPane.showMessageDialog(null, "Turno asignado: " + cliente.getTurno());
+
+            continuar = JOptionPane.showConfirmDialog(null, "¿Desea agregar otro cliente?", "Continuar", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
         }
-    }
-    
-    // Métodos para verificar la prioridad de los turnos
-    private boolean esTurnoDePrioridad() {
-        return this.tipoTurno.equals("prioridad");
-    }
-    
-    private boolean esTurnoNormal() {
-        return this.tipoTurno.equals("normal");
-    }
-    
-    private boolean esNuevoCliente() {
-        return this.tipoCliente.equals("nuevo");
-    }
-    
-    private boolean esClienteConDiscapacidad() {
-        return this.usuarioDiscapacidad.equals("si");
+
+        while (!colaClientes.isEmpty()) {
+            Cliente clienteAtendido = colaClientes.poll();
+            JOptionPane.showMessageDialog(null, "Atendiendo a: " + clienteAtendido);
+        }
     }
 }
